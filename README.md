@@ -41,7 +41,40 @@ Upon activating, the a registration page should open in your browser. Otherwise,
 
 http://localhost:3000/
 
-# Application Screenshots
+# Conceptual Design of Database  
+
+![image1](https://github.com/MikaelSag/OnlineMessengerApp/blob/main/images/image%20(2).png?raw=true)
+![image2](https://github.com/MikaelSag/OnlineMessengerApp/blob/main/images/image.png?raw=true)
+
+# Logical Database Schema
+### User
+* UserID (primary key) → VarChar(50): Stores a user’s unique account ID
+* Email (unique) → Text: Stores a user’s unique email address that they registered with. Cannot be null or default (required information)
+* Username (unique) → VarChar(30): User’s display name on the chat application. Cannot be null or default (required information)
+* Password → VarChar(30): A password associated with a user’s account that they use to access that account. Cannot be null or default (required information)
+* Created_at → DateTime: Keeps track of when a user created their account; how old the account is. Defaults to current time (when user’s account is created)
+* Last_active → DateTime: The last time there was activity on the account; latest time the user was logged in. Defaults to current time (when user’s account is created)
+
+### Participants
+* ParticipantID (foreign key): Stores a reference to the user table. On primary key delete set null
+* ConversationID (foreign key): Stores a reference to the conversation table. On primary key delete cascade from primary key
+* Joined_at → DateTime: Defaults to current time (when participant joins conversation)
+* Primary Key(UserID, ConversationID): A composite key containing the user id and the conversation id. This represents a relationship between Users and Conversations, which is a many to many relationship. Each user can only be part of the same conversation once. 
+
+### Conversations
+* ConversationID (primary key) → VarChar(50): Stores a unique identifier for each conversation
+* Created_at → DateTime: Defaults to current time (when conversation is created)
+* Last_update → DateTime: Defaults to current time (when last message was sent)
+
+### Messages
+* MessageID (primary key) → VarChar(50): Stores a unique identifier for each message
+* ConversationID (foreign key): Stores a reference to the Conversation that the message belongs to. On delete cascade from primary key
+* UserID (foreign key): Stores a reference to the User who sent the message. On primary key delete set null 
+* Delivered_at → DateTime: Defaults to current time (when message is sent)
+* Content → Text: Defaults to null
+
+# Application Screenshots  
+
 ### Registration:
 ![registration](https://github.com/MikaelSag/OnlineMessengerApp/blob/main/images/dbproj6.png?raw=true)
 
